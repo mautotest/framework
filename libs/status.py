@@ -14,9 +14,11 @@ class Status(object):
         self.status = StatusType.ONELINE
         self.status_list = []
 
+
 class StatusType:
     ONELINE = "online"
     OFFLINE = "offline"
     PENDING = "pending"
+
 
 s = Status()

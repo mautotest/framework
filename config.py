@@ -41,11 +41,39 @@
 
 import logging
 import os
+from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 
-#其它配置
+"""基本配置"""
 logging.basicConfig(format='%(asctime)s.%(msecs)03d [%(levelname)s] [%(filename)s:%(lineno)d] %(message)s',
                     datefmt='## %Y-%m-%d %H:%M:%S', level=logging.DEBUG)
 SERVER_PORT = os.environ.get("MTEST_SERVER_PORT", 5021)
-
+SERVER_IP = os.environ.get("MTEST_SERVER_IP", "127.0.0.1")
+PROJECT_PATH = os.environ.get("PROJECT_PATH", "D:\\code\\mtest\\framework\\")
 
 DEBUG = False
+
+"""配置执行job"""
+# JOBS = [
+#     {
+#         'id': 'job1',
+#         'func': 'jobs.job1:hello',
+#         'args': (1, 2),
+#         'trigger': 'interval',
+#         'seconds': 10
+#     }
+# ]
+"""存储位置"""
+SCHEDULER_JOBSTORES = {
+    'default': SQLAlchemyJobStore(url='sqlite:///{}\\sqlite.db'.format(PROJECT_PATH))
+}
+"""线程池配置"""
+SCHEDULER_EXECUTORS = {
+    'default': {'type': 'threadpool', 'max_workers': 20}
+}
+
+SCHEDULER_JOB_DEFAULTS = {
+    'coalesce': False,
+    'max_instances': 3
+}
+"""调度器开关"""
+SCHEDULER_API_ENABLED = True

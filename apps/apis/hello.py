@@ -11,14 +11,20 @@
 from flask_restful import Resource
 from libs.status import s
 from libs.result import Result
-from flask import current_app,request
+from flask import current_app, request
+
 
 class Hello(Resource):
+    """hello"""
+
     def get(self):
         current_app.logger.info('Hello World!')
-        return Result({"hello status:":s.status}).bulid_success()
+        return Result({"hello status:": s.status}).bulid_success()
+
 
 class Heart(Resource):
+    """心跳"""
+
     def post(self):
         current_app.logger.info('rev heart:{}'.format(request.get_json()))
         return Result().bulid_success()
