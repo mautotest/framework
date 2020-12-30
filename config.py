@@ -47,7 +47,7 @@ from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 logging.basicConfig(format='%(asctime)s.%(msecs)03d [%(levelname)s] [%(filename)s:%(lineno)d] %(message)s',
                     datefmt='## %Y-%m-%d %H:%M:%S', level=logging.DEBUG)
 SERVER_PORT = os.environ.get("MTEST_SERVER_PORT", 5021)
-SERVER_IP = os.environ.get("MTEST_SERVER_IP", "127.0.0.1")
+SERVER_IP = os.environ.get("MTEST_SERVER_IP", "0.0.0.0")
 PROJECT_PATH = os.environ.get("PROJECT_PATH", "D:\\code\\mtest\\framework\\")
 
 DEBUG = False

@@ -9,12 +9,14 @@
 # @Time: 12月 21, 2020
 # -----------------------------------------------------
 from flask import current_app
+import random
+import string
 
 
 class APScheduler(object):
     """调度器控制方法"""
 
-    def add_job(self, jobid, func, args, **kwargs):
+    def add_job(self, job={}):
 
         """
         添加任务
@@ -27,40 +29,21 @@ class APScheduler(object):
                         next_run_time ->  datetime.datetime.now() + datetime.timedelta(seconds=12))
         :return:
         """
-        job_def = dict(kwargs)
-        job_def['id'] = jobid
-        job_def['func'] = func
-        job_def['args'] = args
-        job_def = self.fix_job_def(job_def)
-        self.remove_job(jobid)  # 删除原job
-        current_app.apscheduler.scheduler.add_job(**job_def)
+        job_def = dict(job)
+        if "id" in job_def:
+            self.remove_job(job_def["id"])  # 删除原job
+        else:
+            job_def["id"] = "".join(random.sample(string.ascii_letters + string.digits, 20))
+        return current_app.apscheduler.scheduler.add_job(**job_def)
 
     def remove_job(self, jobid, jobstore=None):
         """删除任务"""
-        current_app.apscheduler.remove_job(jobid, jobstore=jobstore)
+        return current_app.apscheduler.remove_job(jobid, jobstore=jobstore)
 
     def resume_job(self, jobid, jobstore=None):
         """恢复任务"""
-        current_app.apscheduler.resume_job(jobid, jobstore=jobstore)
+        return current_app.apscheduler.resume_job(jobid, jobstore=jobstore)
 
     def pause_job(self, jobid, jobstore=None):
-        """恢复任务"""
-        current_app.apscheduler.pause_job(jobid, jobstore=jobstore)
-
-    def fix_job_def(self, job_def):
-        """维修job工程"""
-        if job_def.get('trigger') == 'date':
-            job_def['run_date'] = job_def.get('run_date') or None
-        elif job_def.get('trigger') == 'cron':
-            job_def['hour'] = job_def.get('hour') or "*"
-            job_def['minute'] = job_def.get('minute') or "*"
-            job_def['week'] = job_def.get('week') or "*"
-            job_def['day'] = job_def.get('day') or "*"
-            job_def['month'] = job_def.get('month') or "*"
-        elif job_def.get('trigger') == 'interval':
-            job_def['seconds'] = job_def.get('seconds') or "*"
-        else:
-            if job_def.get("andTri"):
-                # job_def['trigger'] = AndTrigger([job_def.pop("andTri", None), ])
-                job_def['next_run_time'] = job_def.get('next_run_time') or None
-        return job_def
+        """暂停任务"""
+        return current_app.apscheduler.pause_job(jobid, jobstore=jobstore)
