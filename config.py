@@ -52,6 +52,8 @@ PROJECT_PATH = os.environ.get("PROJECT_PATH", "D:\\code\\mtest\\framework\\")
 
 DEBUG = False
 
+SECRET_KEY = "bXRlc3Q="
+
 """配置执行job"""
 # JOBS = [
 #     {

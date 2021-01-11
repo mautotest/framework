@@ -8,23 +8,19 @@
 # @Site: 
 # @Time: 12月 22, 2020
 # -----------------------------------------------------
-class Result(object):
+from libs.emuns import Codes
 
-    def __init__(self, result={}, code=0, desc="success"):
-        self.result = result
-        self.code = code
-        self.desc = desc
 
-    def bulid_success(self):
-        return {
-            "result": self.result,
-            "code": self.code,
-            "desc": self.desc
-        }
+def bulid_success(**kwargs):
+    return {
+        "result": kwargs.get("result") or {},
+        "code": Codes.SUCCESS.value,
+        "desc": Codes.SUCCESS.name
+    }
 
-    def bulid_fail(self):
-        return {
-            "result": self.result,
-            "code": 1,
-            "desc": "fail"
-        }
+
+def bulid_fail(code=None):
+    return {
+        "code": code.value or Codes.FAIL.value,
+        "desc": code.name or Codes.FAIL.name
+    }

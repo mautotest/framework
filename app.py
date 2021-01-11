@@ -10,13 +10,14 @@
 # -----------------------------------------------------
 from flask import Flask
 from flask_restful import Api
-from apps.apis.hello import Hello, Heart
+from apps.apis.hello import Hello, Heart, Login
 from flask_apscheduler import APScheduler
 
 """URL配置"""
 route_urls = {
     Hello: "/",
-    Heart: "/heart"
+    Heart: "/heart",
+    Login: "/login"
 }
 
 
