@@ -42,6 +42,7 @@
 import logging
 import os
 from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
+from flask_sqlalchemy import SQLAlchemy
 
 """基本配置"""
 logging.basicConfig(format='%(asctime)s.%(msecs)03d [%(levelname)s] [%(filename)s:%(lineno)d] %(message)s',
@@ -79,3 +80,8 @@ SCHEDULER_JOB_DEFAULTS = {
 }
 """调度器开关"""
 SCHEDULER_API_ENABLED = True
+
+"""db 配置"""
+SQLALCHEMY_DATABASE_URI = 'sqlite:///{}\\sqlite.db'.format(PROJECT_PATH)
+SQLALCHEMY_TRACK_MODIFICATIONS = True
+db = SQLAlchemy()

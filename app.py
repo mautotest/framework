@@ -12,6 +12,7 @@ from flask import Flask
 from flask_restful import Api
 from apps.apis.hello import Hello, Heart, Login
 from flask_apscheduler import APScheduler
+from config import db
 
 """URL配置"""
 route_urls = {
@@ -41,4 +42,5 @@ def create_app():
     api = Api(app)
     add_resource(api)
     configure_scheduler(app)
+    db.init_app(app)
     return app

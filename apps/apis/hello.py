@@ -14,11 +14,14 @@ from libs.result import bulid_success, bulid_fail
 from libs.decorators import login_wrapper
 from libs.emuns import Codes
 from flask import current_app, request, session
+from apps.services.login_service import check_pwd
 from config import SECRET_KEY
 import base64
 
+
 class Hello(Resource):
     """hello"""
+
     @login_wrapper
     def get(self):
         current_app.logger.info('Hello World!')
@@ -27,6 +30,7 @@ class Hello(Resource):
 
 class Heart(Resource):
     """心跳"""
+
     @login_wrapper
     def post(self):
         current_app.logger.info('rev heart:{}'.format(request.get_json()))
@@ -38,14 +42,15 @@ class Login(Resource):
         登录
         {"username":"abc","password":"123"}
     """
+
     def post(self):
         r = request.get_json()
         user = r.get("username")
         if not user:
             return bulid_fail()
         pwd = r.get("password")
-        if pwd == "123":
+        if check_pwd(user, pwd):
             session[user] = base64.b64encode(user.encode()).decode() + SECRET_KEY
-            return bulid_success(result={"session":session.get(user)})
+            return bulid_success(result={"session": session.get(user)})
         else:
             return bulid_fail(Codes.USER_PAW_ERROR)
