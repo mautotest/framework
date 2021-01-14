@@ -19,8 +19,8 @@ def bulid_success(**kwargs):
     }
 
 
-def bulid_fail(code=None):
+def bulid_fail(code=Codes.FAIL):
     return {
-        "code": code.value or Codes.FAIL.value,
-        "desc": code.name or Codes.FAIL.name
+        "code": code.value,
+        "desc": code.name
     }

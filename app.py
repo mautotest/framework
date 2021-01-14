@@ -11,21 +11,23 @@
 from flask import Flask
 from flask_restful import Api
 from apps.apis.hello import Hello, Heart, Login
+from apps.apis.jobs import Jobs
 from flask_apscheduler import APScheduler
 from config import db
+from apps.apis.uris import *
 
 """URL配置"""
 route_urls = {
-    Hello: "/",
-    Heart: "/heart",
-    Login: "/login"
+    Hello: (HELLO_URL,),
+    Login: (LOGIN_URL,),
+    Jobs: (JOB_LIST, JOB_ADD, JOB_PAUSE, JOB_RESUME, JOB_REMOVE),
 }
 
 
 def add_resource(api):
     """注入URL"""
     for k, v in route_urls.items():
-        api.add_resource(k, v)
+        api.add_resource(k, *v)
 
 
 def configure_scheduler(app):
