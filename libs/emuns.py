@@ -16,3 +16,5 @@ class Codes(Enum):
    FAIL = 1
    NOT_LOGIN = 101
    USER_PAW_ERROR = 102
+   JOB_ID_CAN_NOT_NULL = 110
+   JOB_ID_NOT_FOUND= 111

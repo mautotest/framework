@@ -8,7 +8,7 @@
 # @Site: 
 # @Time: 1月 12, 2021
 # ---------------------------------------------
-from flask import session, request
+from flask import session, request, current_app
 from functools import wraps
 from .result import bulid_fail
 from libs.emuns import Codes
@@ -25,8 +25,10 @@ def login_wrapper(func):
             user = base64.b64decode(s.replace(SECRET_KEY, "")).decode()
             if s == session.get(user):
                 return func(*args, **kwargs)
-        except Exception:
-            pass
-        return bulid_fail(code=Codes.NOT_LOGIN)
+            else:
+                return bulid_fail(code=Codes.NOT_LOGIN)
+        except Exception as e:
+            current_app.logger.error("something error: {}".format(e))
+            return bulid_fail()
 
     return inner

@@ -47,3 +47,11 @@ class APScheduler(object):
     def pause_job(self, jobid, jobstore=None):
         """暂停任务"""
         return current_app.apscheduler.pause_job(jobid, jobstore=jobstore)
+
+    def get_job(self,jobid):
+        """获取JOB"""
+        return current_app.apscheduler.get_job(jobid)
+
+    def get_jobs(self):
+        """获取JOBS"""
+        return current_app.apscheduler.get_jobs()
