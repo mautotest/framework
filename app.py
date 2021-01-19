@@ -10,6 +10,7 @@
 # -----------------------------------------------------
 from flask import Flask
 from flask_restful import Api
+from flask_cors import CORS
 from apps.apis.hello import Hello, Heart, Login
 from apps.apis.jobs import Jobs
 from flask_apscheduler import APScheduler
@@ -45,4 +46,5 @@ def create_app():
     add_resource(api)
     configure_scheduler(app)
     db.init_app(app)
+    CORS(app)
     return app
