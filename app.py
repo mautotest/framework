@@ -11,7 +11,7 @@
 from flask import Flask
 from flask_restful import Api
 from flask_cors import CORS
-from apps.apis.hello import Hello, Heart, Login
+from apps.apis.hello import Hello, Login
 from apps.apis.jobs import Jobs
 from flask_apscheduler import APScheduler
 from config import db

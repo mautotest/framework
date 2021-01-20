@@ -45,9 +45,9 @@ class Login(Resource):
 
     def post(self):
         r = request.get_json()
-        user = r.get("username") or False
-        if not user:
+        if not r or not r.get("username"):
             return bulid_fail()
+        user = r.get("username")
         pwd = r.get("password")
         if check_pwd(user, pwd):
             session[user] = base64.b64encode(user.encode()).decode() + SECRET_KEY
