@@ -45,7 +45,7 @@ class Login(Resource):
 
     def post(self):
         r = request.get_json()
-        user = r.get("username")
+        user = r.get("username") or False
         if not user:
             return bulid_fail()
         pwd = r.get("password")
