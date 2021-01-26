@@ -8,12 +8,12 @@
 # @Site: 
 # @Time: 1月 12, 2021
 # ---------------------------------------------
-from flask import session, request, current_app
+from flask import request, current_app
 from functools import wraps
 from .result import bulid_fail
 from libs.emuns import Codes
-from config import SECRET_KEY
-import base64
+from itsdangerous import base64_decode
+import zlib
 
 
 def login_wrapper(func):
@@ -21,9 +21,17 @@ def login_wrapper(func):
     def inner(*args, **kwargs):
         # 校验session
         try:
-            s = request.headers.get("Session")
-            user = base64.b64decode(s.replace(SECRET_KEY, "")).decode()
-            if s == session.get(user):
+            compressed = False
+            s = request.cookies.get("session")
+            if s.startswith('.'):
+                compressed = True
+                s = s[1:]
+            d = s.split(".")[0]
+            d = base64_decode(d)
+            if compressed:
+                d = zlib.decompress(d)
+            cookies_d = eval(str(d,"utf-8"))
+            if cookies_d.get("username"):
                 return func(*args, **kwargs)
             else:
                 return bulid_fail(code=Codes.NOT_LOGIN)

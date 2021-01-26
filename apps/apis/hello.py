@@ -15,8 +15,6 @@ from libs.decorators import login_wrapper
 from libs.emuns import Codes
 from flask import current_app, request, session
 from apps.services.login_service import check_pwd
-from config import SECRET_KEY
-import base64
 
 
 class Hello(Resource):
@@ -50,7 +48,7 @@ class Login(Resource):
         user = r.get("username")
         pwd = r.get("password")
         if check_pwd(user, pwd):
-            session[user] = base64.b64encode(user.encode()).decode() + SECRET_KEY
-            return bulid_success(result={"session": session.get(user)})
+            session["username"] = user
+            return bulid_success()
         else:
             return bulid_fail(Codes.USER_PAW_ERROR)
